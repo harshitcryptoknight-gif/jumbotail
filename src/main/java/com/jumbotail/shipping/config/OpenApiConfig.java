@@ -44,7 +44,7 @@ public class OpenApiConfig {
                                                                 .url("https://jumbotail-production.up.railway.app")
                                                                 .description("Railway Production Server"),
                                                 new Server()
-                                                                .url("http://localhost:8080")
+                                                                .url("https://jumbotail-production.up.railway.app")
                                                                 .description("Local Development Server")));
         }
 }

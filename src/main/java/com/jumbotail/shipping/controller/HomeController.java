@@ -1,6 +1,6 @@
 package com.jumbotail.shipping.controller;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,8 +14,11 @@ import java.time.format.DateTimeFormatter;
 @Controller
 public class HomeController {
 
-    @Value("${spring.profiles.active:local}")
-    private String activeProfile;
+    private final Environment environment;
+
+    public HomeController(Environment environment) {
+        this.environment = environment;
+    }
 
     @GetMapping("/")
     public String home(Model model) {
@@ -27,8 +30,12 @@ public class HomeController {
     }
 
     private String getEnvironmentName() {
-        if ("prod".equalsIgnoreCase(activeProfile) || "production".equalsIgnoreCase(activeProfile)) {
-            return "Production";
+        String[] activeProfiles = environment.getActiveProfiles();
+        if (activeProfiles.length > 0) {
+            String profile = activeProfiles[0];
+            if ("prod".equalsIgnoreCase(profile) || "production".equalsIgnoreCase(profile)) {
+                return "Production";
+            }
         }
         return "Local";
     }
